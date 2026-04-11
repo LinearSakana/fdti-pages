@@ -1,3 +1,21 @@
+/* 引入 Google Fonts */
+@import url('https://fonts.googleapis.com/css2?family=Bangers&family=Bungee&family=Luckiest_Guy&family=ZCOOL+KuaiLe&family=ZCOOL+QingKe+HuangYou&family=Caprasimo&display=swap');
+
+/* 应用示例 */
+header h1 {
+  font-family: 'Caprasimo', cursive;
+  letter-spacing: 30px; /* 增加字间距更有张力 */
+}
+
+#intro h2, .type-name {
+  font-family: 'ZCOOL KuaiLe', cursive;
+}
+
+button {
+  font-family: 'ZCOOL KuaiLe', cursive;
+  letter-spacing: 2px;
+}
+
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 :root {
   --blue: #0E1B4F;
@@ -10,7 +28,8 @@
 }
 
 body {
-  font-family: "Noto Sans SC", "Microsoft YaHei", sans-serif;
+  font-family: "ZCOOL KuaiLe", "Noto Sans SC", "Microsoft YaHei", sans-serif;
+  font-weight: 500;
   background-color: var(--cream);
   color: var(--text);
   min-height: 100vh;
@@ -28,9 +47,8 @@ header {
   text-align: center;
   border-bottom: var(--border);
 }
-header .brand { font-size: 14px; font-weight: bold; letter-spacing: 2px; margin-bottom: 8px; color: var(--yellow); }
-header h1 { font-size: 48px; font-weight: 900; letter-spacing: 4px; color: var(--red); text-shadow: 2px 2px 0 var(--cream); margin: 0; }
-header .sub { font-size: 16px; margin-top: 8px; font-weight: bold; }
+header .brand { font-family: 'Caprasimo'; font-size: 14px; font-weight: lighter; letter-spacing: 5px; margin-bottom: 2px; color: var(--yellow); }
+header h1 { font-size: 52px; font-weight: 800; letter-spacing: 4px; color: var(--red); text-shadow: 2px 2px 0 var(--cream); margin: 0; }
 
 main {
   width: 100%;
@@ -42,14 +60,13 @@ main {
 .screen.active { display: block; }
 
 #intro { text-align: center; padding-top: 20px; }
-#intro h2 { font-size: 28px; color: var(--red); margin-bottom: 20px; font-weight: 900; }
-#intro .desc { font-size: 16px; font-weight: bold; margin-bottom: 15px; }
+#intro h2 { font-size: 28px; color: var(--red); margin-bottom: 20px;}
+#intro .desc { font-size: 18px; margin-bottom: 15px; }
 
 button {
   border: var(--border);
   cursor: pointer;
-  font: inherit;
-  font-weight: 800;
+  font-size: 20px;
   border-radius: var(--radius);
   box-shadow: 4px 4px 0 var(--blue);
   transition: all 0.1s ease;
@@ -64,7 +81,6 @@ button:active {
   display: inline-block;
   background-color: var(--red);
   color: var(--cream);
-  font-size: 20px;
   padding: 16px 48px;
   margin-top: 10px;
 }
@@ -73,18 +89,17 @@ button:active {
   display: inline-block;
   background-color: var(--yellow);
   color: var(--blue);
-  font-size: 16px;
   padding: 12px 32px;
 }
 
-#intro .author, #intro .note { margin-top: 25px; font-size: 14px; font-weight: bold; }
+#intro .author, #intro .note { margin-top: 25px; font-size: 14px;}
 #intro .author a { color: var(--red); text-decoration: none; border-bottom: 2px solid var(--red); }
 
-.progress-wrap { display: flex; align-items: center; gap: 15px; margin-bottom: 20px; font-weight: bold; }
+.progress-wrap { display: flex; align-items: center; gap: 15px; margin-bottom: 20px;}
 .progress-bar { flex: 1; height: 16px; background-color: var(--cream); border: var(--border); }
 .progress-fill { height: 100%; width: 0; background-color: var(--red); transition: width 0.3s ease; }
 .progress-text { font-size: 14px; white-space: nowrap; }
-.hint { font-size: 14px; font-weight: bold; margin-bottom: 20px; color: var(--red); }
+.hint { font-size: 14px; margin-bottom: 20px; color: var(--blue); }
 
 .quiz-actions { margin-top: 20px; }
 
@@ -101,18 +116,21 @@ button:active {
   align-items: center;
   justify-content: space-between;
   margin-bottom: 15px;
-  font-weight: 800;
-  font-size: 14px;
+  font-family: 'Bungee', cursive;
+  font-weight: 200;
+  letter-spacing: -2px;
+  font-size: 20px;
 }
 
 .badge {
   background-color: var(--yellow);
-  padding: 4px 10px;
+  padding: 4px 6px;
   border: 2px solid var(--blue);
+  box-shadow: 6px 6px 0 var(--blue);
   color: var(--blue);
 }
 
-.question-title { font-size: 20px; font-weight: 900; margin-bottom: 25px; white-space: pre-wrap; color: var(--blue); line-height: 1.5; }
+.question-title { font-size: 20px; margin-bottom: 25px; white-space: pre-wrap; color: var(--blue); line-height: 1.5; }
 
 .options { display: flex; flex-direction: column; gap: 15px; }
 
@@ -125,7 +143,7 @@ button:active {
   background-color: var(--cream);
   color: var(--blue);
   padding: 18px 20px;
-  font-size: 16px;
+  font-size: 20px;
   position: relative;
   overflow: hidden;
   /* Remove active transform since selected state will handle it */
@@ -144,7 +162,8 @@ button:active {
   height: 28px;
   background-color: var(--blue);
   color: var(--cream);
-  font-size: 14px;
+  font-family: 'Caprasimo', cursive;
+  font-size: 18px;
   border: 2px solid var(--blue);
   display: inline-flex;
   align-items: center;
@@ -199,18 +218,17 @@ button:active {
 }
 
 #result .top-info { text-align: center; margin-bottom: 30px; border-bottom: var(--border); padding-bottom: 20px; }
-#result .type-kicker { font-weight: 900; font-size: 16px; margin-bottom: 10px; color: var(--red); }
-#result .type-name { font-size: 44px; font-weight: 900; color: var(--blue); margin-bottom: 15px; }
+#result .type-kicker { font-size: 16px; margin-bottom: 10px; color: var(--red); }
+#result .type-name { font-family: 'Caprasimo', cursive; font-size: 44px; font-weight: 900; color: var(--blue); margin-bottom: 15px; }
 #result .match {
   display: inline-block;
   background-color: var(--yellow);
   color: var(--blue);
   border: 3px solid var(--blue);
   padding: 6px 16px;
-  font-weight: 800;
   margin-bottom: 15px;
 }
-#result .type-subname { font-size: 16px; font-weight: bold; color: var(--blue); }
+#result .type-subname { font-size: 16px; color: var(--blue); }
 
 .poster-box {
   border: var(--border);
@@ -225,7 +243,7 @@ button:active {
   display: block;
 }
 .poster-box.no-image .poster-image { display: none; }
-.poster-caption { margin-top: 15px; font-weight: bold; color: var(--blue); text-align: center; }
+.poster-caption { margin-top: 15px; color: var(--blue); text-align: center; }
 
 .analysis-box, .dim-box, .note-box, .author-box {
   border: var(--border);
@@ -236,15 +254,15 @@ button:active {
 }
 
 .analysis-box h3, .dim-box h3, .note-box h3 { 
-  font-size: 18px; 
-  font-weight: 900; 
+  font-size: 18px;
+  font-weight: 520;
   margin-bottom: 15px; 
   color: var(--red); 
   border-bottom: 2px solid var(--blue);
   padding-bottom: 8px;
 }
 
-#resultDesc, .note-box p { font-size: 15px; font-weight: 600; line-height: 1.8; white-space: pre-wrap; }
+#resultDesc, .note-box p { font-size: 15px; line-height: 1.8; white-space: pre-wrap; }
 
 .dim-list { display: grid; gap: 15px; }
 .dim-item {
@@ -252,19 +270,18 @@ button:active {
   padding: 15px;
   background-color: var(--yellow);
 }
-.dim-item-top { display: flex; justify-content: space-between; margin-bottom: 8px; font-weight: 900; }
+.dim-item-top { display: flex; justify-content: space-between; margin-bottom: 8px; }
 .dim-item-score { color: var(--red); }
-.dim-item p { font-size: 14px; font-weight: 700; color: var(--blue); }
+.dim-item p { font-size: 14px; color: var(--blue); }
 
 .author-box summary { 
   list-style: none;
-  font-weight: 900; 
   color: var(--red); 
   cursor: pointer; 
   font-size: 16px; 
 }
 .author-box summary::-webkit-details-marker { display: none; }
-.author-content p { margin-top: 10px; font-weight: 600; font-size: 14px; line-height: 1.8; color: var(--blue); }
+.author-content p { margin-top: 10px; font-size: 14px; line-height: 1.8; color: var(--blue); }
 
 .result-actions { display: flex; flex-wrap: wrap; gap: 20px; justify-content: center; margin-top: 30px; }
 
@@ -275,8 +292,4 @@ button:active {
   header h1 { font-size: 38px; }
   .type-name { font-size: 34px; }
   .btn-primary { padding: 14px 32px; }
-}
-
-.desc-small {
-  font-size: 13px !important;
 }
