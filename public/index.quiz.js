@@ -773,22 +773,28 @@
 
       questionList.querySelectorAll('.option-btn').forEach(btn => {
         btn.addEventListener('click', () => {
-          const value = Number(btn.getAttribute('data-value'));
-          app.answers[current.id] = value;
+          if (btn.classList.contains('selected')) return;
+          
+          btn.classList.add('selected');
+          
+          setTimeout(() => {
+            const value = Number(btn.getAttribute('data-value'));
+            app.answers[current.id] = value;
 
-          if (current.id === 'drink_gate_q1' && value !== 3) {
-            delete app.answers['drink_gate_q2'];
-          }
+            if (current.id === 'drink_gate_q1' && value !== 3) {
+              delete app.answers['drink_gate_q2'];
+            }
 
-          const updatedQuestions = getVisibleQuestions();
-          const isLast = app.currentIndex >= updatedQuestions.length - 1;
-          if (isLast) {
-            renderResult();
-            return;
-          }
+            const updatedQuestions = getVisibleQuestions();
+            const isLast = app.currentIndex >= updatedQuestions.length - 1;
+            if (isLast) {
+              renderResult();
+              return;
+            }
 
-          app.currentIndex += 1;
-          renderCurrentQuestion();
+            app.currentIndex += 1;
+            renderCurrentQuestion();
+          }, 500);
         });
       });
 
