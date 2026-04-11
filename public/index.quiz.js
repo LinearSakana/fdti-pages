@@ -240,7 +240,11 @@ function determineResultDisplay(scoredData, rankedMatch) {
 
 function updateProgress() {
     const total = app.shuffledQuestions.length;
-    const currentStep = total ? Math.min(app.currentIndex + 1, total) : 0;
+    let displayStep = app.currentIndex + 1;
+    if (app.prankIndex !== -1 && app.currentIndex === 2) {
+        displayStep -= 1; // 整蛊起效，假装进度没变
+    }
+    const currentStep = total ? Math.min(displayStep, total) : 0;
     const percent = total ? ((currentStep - 1) / total) * 100 : 0;
     
     progressBar.style.width = `${percent}%`;
