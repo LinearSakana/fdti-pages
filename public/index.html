@@ -1,0 +1,331 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>SBTI 人格测试</title>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      --red: #c8102e;
+      --dark: #12121f;
+      --mid: #1c1c30;
+      --card: #232340;
+      --accent: #e94560;
+      --gold: #f5a623;
+      --text: #eaeaea;
+      --muted: #8f9abc;
+      --line: rgba(255, 255, 255, 0.08);
+      --radius: 14px;
+    }
+
+    body {
+      font-family: "PingFang SC", "Microsoft YaHei", sans-serif;
+      background: radial-gradient(circle at 10% 10%, #202038 0%, var(--dark) 45%, #0e0e17 100%);
+      color: var(--text);
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    header {
+      width: 100%;
+      background: linear-gradient(135deg, var(--red) 0%, #7b0020 100%);
+      padding: 22px 24px 18px;
+      text-align: center;
+      box-shadow: 0 4px 24px rgba(200, 16, 46, 0.45);
+    }
+    header .brand { font-size: 12px; letter-spacing: 3px; opacity: 0.75; margin-bottom: 4px; }
+    header h1 { font-size: 44px; font-weight: 900; letter-spacing: 6px; }
+    header .sub { font-size: 14px; margin-top: 6px; opacity: 0.88; }
+
+    main {
+      width: 100%;
+      max-width: 760px;
+      padding: 28px 18px 80px;
+    }
+
+    .screen { display: none; }
+    .screen.active { display: block; }
+
+    #intro { text-align: center; padding-top: 18px; }
+    #intro h2 { font-size: 26px; line-height: 1.45; margin-bottom: 14px; }
+    #intro .desc { color: var(--muted); font-size: 15px; line-height: 1.85; margin-bottom: 8px; }
+    #intro .note { font-size: 12px; color: var(--muted); margin-top: 20px; }
+    #intro .author {
+      margin-top: 24px;
+      font-size: 13px;
+      color: var(--muted);
+    }
+    #intro .author a { color: #ffd2d9; }
+
+    button {
+      border: none;
+      cursor: pointer;
+      font: inherit;
+    }
+
+    .btn-primary {
+      display: inline-block;
+      background: linear-gradient(135deg, var(--red), var(--accent));
+      color: #fff;
+      font-size: 17px;
+      font-weight: 700;
+      padding: 15px 42px;
+      border-radius: 999px;
+      letter-spacing: 1px;
+      box-shadow: 0 4px 20px rgba(233, 69, 96, 0.4);
+      transition: transform 0.15s, box-shadow 0.15s;
+    }
+    .btn-primary:hover { transform: translateY(-2px); box-shadow: 0 8px 28px rgba(233, 69, 96, 0.5); }
+
+    .btn-secondary {
+      display: inline-block;
+      background: transparent;
+      border: 2px solid var(--accent);
+      color: var(--accent);
+      font-size: 15px;
+      font-weight: 700;
+      padding: 11px 28px;
+      border-radius: 999px;
+      letter-spacing: 1px;
+      transition: background 0.15s, color 0.15s;
+    }
+    .btn-secondary:hover { background: var(--accent); color: #fff; }
+
+    .progress-wrap { display: flex; align-items: center; gap: 12px; margin-bottom: 16px; }
+    .progress-bar { flex: 1; height: 5px; background: var(--card); border-radius: 999px; overflow: hidden; }
+    .progress-fill { height: 100%; width: 0; background: linear-gradient(90deg, var(--red), var(--accent)); border-radius: 999px; transition: width 0.3s ease; }
+    .progress-text { font-size: 12px; color: var(--muted); white-space: nowrap; }
+
+    .hint { color: var(--muted); font-size: 13px; margin-bottom: 14px; }
+    .quiz-actions { margin-top: 14px; }
+
+    .question {
+      background: var(--mid);
+      border-radius: var(--radius);
+      padding: 24px 20px;
+      border: 1px solid var(--line);
+      box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+      animation: fadeUp 0.25s ease;
+    }
+    .question-meta {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      margin-bottom: 10px;
+      color: var(--muted);
+      font-size: 12px;
+    }
+    .badge {
+      border: 1px solid var(--line);
+      border-radius: 999px;
+      padding: 5px 10px;
+      color: var(--gold);
+      letter-spacing: 1px;
+    }
+    .question-title { font-size: 18px; font-weight: 600; line-height: 1.65; margin-bottom: 20px; white-space: pre-wrap; }
+    .options { display: flex; flex-direction: column; gap: 10px; }
+
+    .option-btn {
+      width: 100%;
+      display: flex;
+      align-items: flex-start;
+      gap: 12px;
+      text-align: left;
+      border-radius: 11px;
+      border: 2px solid transparent;
+      background: var(--card);
+      color: var(--text);
+      padding: 14px 16px;
+      font-size: 14px;
+      line-height: 1.55;
+      transition: border-color 0.15s, background 0.15s, transform 0.1s;
+    }
+    .option-btn:hover { border-color: var(--accent); background: rgba(233, 69, 96, 0.13); transform: translateX(3px); }
+    .option-code {
+      flex-shrink: 0;
+      width: 22px;
+      height: 22px;
+      border-radius: 6px;
+      background: rgba(255, 255, 255, 0.1);
+      font-size: 11px;
+      font-weight: 700;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      margin-top: 1px;
+    }
+
+    #result .result-card {
+      background: var(--mid);
+      border-radius: var(--radius);
+      padding: 22px;
+      border: 1px solid var(--line);
+      margin-bottom: 14px;
+    }
+    #result .top-info { text-align: center; margin-bottom: 20px; }
+    #result .type-kicker { color: var(--gold); font-size: 12px; letter-spacing: 3px; margin-bottom: 8px; }
+    #result .type-name { font-size: 38px; font-weight: 900; margin-bottom: 10px; line-height: 1.2; }
+    #result .match {
+      display: inline-block;
+      background: rgba(245, 166, 35, 0.16);
+      color: var(--gold);
+      border: 1px solid rgba(245, 166, 35, 0.35);
+      border-radius: 999px;
+      padding: 8px 14px;
+      font-size: 13px;
+      margin-bottom: 10px;
+    }
+    #result .type-subname { color: var(--muted); font-size: 14px; line-height: 1.8; }
+
+    .poster-box {
+      background: var(--card);
+      border-radius: 12px;
+      padding: 12px;
+      border: 1px solid var(--line);
+      margin-bottom: 16px;
+    }
+    .poster-image {
+      width: 100%;
+      max-height: 460px;
+      object-fit: contain;
+      border-radius: 8px;
+      background: rgba(0, 0, 0, 0.25);
+    }
+    .poster-box.no-image .poster-image { display: none; }
+    .poster-caption { margin-top: 10px; color: var(--muted); font-size: 13px; line-height: 1.7; }
+
+    .analysis-box, .dim-box, .note-box, .author-box {
+      background: var(--card);
+      border-radius: 12px;
+      padding: 16px;
+      border: 1px solid var(--line);
+      margin-bottom: 12px;
+    }
+    .analysis-box h3, .dim-box h3, .note-box h3 { font-size: 15px; margin-bottom: 10px; }
+    #resultDesc { white-space: pre-wrap; line-height: 1.8; font-size: 14px; }
+
+    .dim-list { display: grid; gap: 10px; }
+    .dim-item {
+      border: 1px solid var(--line);
+      border-radius: 10px;
+      padding: 12px;
+      background: rgba(0, 0, 0, 0.15);
+    }
+    .dim-item-top { display: flex; justify-content: space-between; gap: 10px; margin-bottom: 6px; }
+    .dim-item-name { font-size: 13px; font-weight: 700; }
+    .dim-item-score { color: var(--gold); font-size: 13px; font-weight: 700; white-space: nowrap; }
+    .dim-item p { color: var(--muted); font-size: 12px; line-height: 1.7; }
+    .note-box p { color: var(--muted); font-size: 13px; line-height: 1.7; }
+
+    .author-box summary {
+      list-style: none;
+      cursor: pointer;
+      font-size: 14px;
+      font-weight: 700;
+      color: var(--gold);
+    }
+    .author-box summary::-webkit-details-marker { display: none; }
+    .author-content p {
+      margin-top: 10px;
+      color: var(--muted);
+      font-size: 13px;
+      line-height: 1.85;
+    }
+
+    .result-actions { margin-top: 16px; display: flex; gap: 12px; flex-wrap: wrap; justify-content: center; }
+
+    @keyframes fadeUp { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+
+    @media (max-width: 480px) {
+      header h1 { font-size: 34px; }
+      .question-title { font-size: 16px; }
+      #result .type-name { font-size: 30px; }
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <div class="brand">SBTI SYSTEM</div>
+    <h1>SBTI</h1>
+    <div class="sub">31 道题测出你的隐藏人格</div>
+  </header>
+
+  <main>
+    <section id="intro" class="screen active">
+      <h2>MBTI 已经过时，SBTI 来了。</h2>
+      <p class="desc">一题一题作答，没有对错，只有你当下的本能。</p>
+      <p class="desc" style="font-size: 13px;">选择后自动跳转下一题，约 5 分钟完成。</p>
+      <button id="startBtn" class="btn-primary">开始测试</button>
+      <p class="author">
+        原作者：
+        <a href="https://space.bilibili.com/417038183" target="_blank" rel="noreferrer">B站@蛆肉儿串儿</a>
+      </p>
+      <p class="note">本测试仅供娱乐</p>
+    </section>
+
+    <section id="test" class="screen">
+      <div class="progress-wrap">
+        <div class="progress-bar"><div id="progressBar" class="progress-fill"></div></div>
+        <div id="progressText" class="progress-text">1 / 31</div>
+      </div>
+      <div id="testHint" class="hint">选择一个选项后会自动进入下一题。</div>
+      <div id="questionList"></div>
+      <div class="quiz-actions">
+        <button id="backIntroBtn" class="btn-secondary">返回首页</button>
+      </div>
+    </section>
+
+    <section id="result" class="screen">
+      <div class="result-card">
+        <div class="top-info">
+          <div id="resultModeKicker" class="type-kicker">你的主类型</div>
+          <div id="resultTypeName" class="type-name">CTRL（拿捏者）</div>
+          <div id="matchBadge" class="match">匹配度 92%</div>
+          <div id="resultTypeSub" class="type-subname">系统备注会显示在这里。</div>
+        </div>
+
+        <div id="posterBox" class="poster-box">
+          <img id="posterImage" class="poster-image" alt="人格结果图" />
+          <div id="posterCaption" class="poster-caption">怎么样，被我拿捏了吧？</div>
+        </div>
+
+        <div class="analysis-box">
+          <h3>该人格的简单解读</h3>
+          <p id="resultDesc"></p>
+        </div>
+
+        <div class="dim-box">
+          <h3>十五维度评分</h3>
+          <div id="dimList" class="dim-list"></div>
+        </div>
+
+        <div class="note-box">
+          <h3>友情提示</h3>
+          <p id="funNote">本测试仅供娱乐，别拿它当诊断、面试、相亲、分手、招魂、算命或人生判决书。</p>
+        </div>
+
+        <details class="author-box">
+          <summary>作者的话</summary>
+          <div class="author-content">
+            <p>本测试首发于b站up主蛆肉儿串儿（UID417038183），初衷是劝诫一位爱喝酒的朋友戒酒。</p>
+            <p>由于作者的人格是SHIT愤世者，所以平等的攻击了各位，在此抱歉！！不过我是一个绝世大美女，你们一定会原谅我，有B站的朋友们也可以关注我。</p>
+            <p>关于这个测试，我没法很好的平衡娱乐和专业性，因此对于一些人格的阐释较为模糊或完全不准（如屌丝可能并非真的屌丝），如有冒犯非常抱歉！！</p>
+            <p>再鉴于时间精力有限，就随便搞了一个先这样玩玩，后续会慢慢完善修改的，总之好玩为主，还请不要用于盈利呀。</p>
+          </div>
+        </details>
+      </div>
+
+      <div class="result-actions">
+        <button id="restartBtn" class="btn-secondary">重新测试</button>
+        <button id="toTopBtn" class="btn-primary">回到首页</button>
+      </div>
+    </section>
+  </main>
+
+  <script src="./index.quiz.js"></script>
+</body>
+</html>
