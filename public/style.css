@@ -87,6 +87,17 @@ main {
     margin-bottom: 15px;
 }
 
+#intro .author, #intro .note {
+    margin-top: 25px;
+    font-size: 16px;
+}
+
+#intro .author a {
+    color: var(--red);
+    text-decoration: none;
+    border-bottom: 2px solid var(--red);
+}
+
 button {
     font-family: "ZCOOL KuaiLe", cursive;
     border: var(--border);
@@ -116,17 +127,6 @@ button:active {
     background-color: var(--yellow);
     color: var(--blue);
     padding: 12px 28px;
-}
-
-#intro .author, #intro .note {
-    margin-top: 25px;
-    font-size: 16px;
-}
-
-#intro .author a {
-    color: var(--red);
-    text-decoration: none;
-    border-bottom: 2px solid var(--red);
 }
 
 .progress-wrap {
