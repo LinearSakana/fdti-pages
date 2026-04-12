@@ -263,13 +263,15 @@ function matchPersonality(levels) {
  * 处理特殊判定，组装最终渲染用数据对象
  */
 function determineResultDisplay(scoredData, rankedMatch) {
-    const topCandidates = rankedMatch.slice(0, 3);
+    const candidates = Array.from(
+        new Map([...rankedMatch.slice(0,3),...rankedMatch.slice(-2)].map(t => [t.code, t])).values()
+    )
     const fallbackNormal = window.QUIZ_DATA.typeLibrary.NPC;
-    let bestNormal = topCandidates[0] || fallbackNormal;
+    let bestNormal = candidates[0] || fallbackNormal;
 
-    if (topCandidates.length > 1) {
+    if (candidates.length > 1) {
         // 权重从高到低（可调整）
-        const baseWeights = [0.6, 0.3, 0.1].slice(0, topCandidates.length);
+        const baseWeights = [0.7, 0.1, 0.1, 0.05, 0.05].slice(0, candidates.length);
         const total = baseWeights.reduce((s, w) => s + w, 0);
         let r = Math.random() * total;
         let idx = 0;
@@ -277,7 +279,7 @@ function determineResultDisplay(scoredData, rankedMatch) {
             r -= baseWeights[idx];
             idx++;
         }
-        bestNormal = topCandidates[idx];
+        bestNormal = candidates[idx];
     }
 
     // 默认结果字段
