@@ -64,6 +64,7 @@ const funNote = document.getElementById('funNote');
 const posterBox = document.getElementById('posterBox');
 const posterImage = document.getElementById('posterImage');
 const dimList = document.getElementById('dimList');
+const backPrevBtn = document.getElementById('backPrevBtn');
 
 // ============================================================================
 // 工具函数
@@ -159,6 +160,30 @@ function resolveFollowUp(currentQ, value) {
     if (nextQuestions.length > 0) {
         app.shuffledQuestions.splice(app.currentIndex + 1, 0, ...nextQuestions);
     }
+}
+
+function clearFollowUp(currentQ) {
+    const followUpIds = new Set();
+    const pendingTriggerIds = [currentQ.id];
+
+    while (pendingTriggerIds.length > 0) {
+        const triggerId = pendingTriggerIds.shift();
+        const nextFollowUps = window.QUIZ_DATA.specialQuestions.filter(q => q.triggerId === triggerId);
+        nextFollowUps.forEach(q => {
+            if (followUpIds.has(q.id)) return;
+            followUpIds.add(q.id);
+            pendingTriggerIds.push(q.id);
+        });
+    }
+
+    if (followUpIds.size === 0) return;
+
+    app.shuffledQuestions = app.shuffledQuestions.filter((q, idx) => {
+        if (idx <= app.currentIndex) return true;
+        if (!followUpIds.has(q.id)) return true;
+        delete app.answers[q.id];
+        return false;
+    });
 }
 
 /**
@@ -317,6 +342,9 @@ function updateProgress() {
     }
 
     testHint.innerHTML = hintText;
+    if (backPrevBtn) {
+        backPrevBtn.disabled = app.currentIndex <= 0;
+    }
 }
 
 function renderCurrentQuestion() {
@@ -366,6 +394,7 @@ function renderCurrentQuestion() {
             const value = Number(btn.getAttribute('data-value'));
             app.answers[currentQ.id] = value;
 
+            clearFollowUp(currentQ);
             // 处理可能的追问
             resolveFollowUp(currentQ, value);
 
@@ -450,6 +479,11 @@ function startTest() {
 
 // 事件挂载
 document.getElementById('startBtn').addEventListener('click', () => startTest());
+document.getElementById('backPrevBtn').addEventListener('click', () => {
+    if (app.currentIndex <= 0) return;
+    app.currentIndex -= 1;
+    renderCurrentQuestion();
+});
 document.getElementById('backIntroBtn').addEventListener('click', () => showScreen('intro'));
 document.getElementById('toTopBtn').addEventListener('click', () => showScreen('intro'));
 

@@ -168,7 +168,17 @@ button:active {
 }
 
 .quiz-actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px;
+    justify-content: center;
     margin-top: 20px;
+}
+
+.quiz-actions .btn-secondary:disabled {
+    cursor: not-allowed;
+    opacity: 0.5;
+    box-shadow: none;
 }
 
 .question {
