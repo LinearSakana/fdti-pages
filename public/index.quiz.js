@@ -42,7 +42,11 @@ const HINT_EASTER_EGGS = [
 const app = {
     shuffledQuestions: [], // 题目队列
     answers: {},           // 用户答案映射表 { questionId: value }
-    currentIndex: 0        // 当前题目索引
+    currentIndex: 0,       // 当前题目索引
+    testStartedAtMs: 0,    // 本次作答开始时间戳
+    questionShownAtMs: 0,  // 当前题目开始展示时间戳
+    questionDurations: {}, // 每题耗时映射 { questionId: durationMs }
+    resultStatsReported: false
 };
 
 // ============================================================================
@@ -148,6 +152,60 @@ function updatePosterGlow(src) {
 function getQuestionMetaLabel(q) {
     if (q.special) return '补充题';
     return ' ';
+}
+
+function compareQuestionId(a, b) {
+    const aNum = Number(String(a).match(/\d+/)?.[0] || NaN);
+    const bNum = Number(String(b).match(/\d+/)?.[0] || NaN);
+    const aHasNum = Number.isFinite(aNum);
+    const bHasNum = Number.isFinite(bNum);
+
+    if (aHasNum && bHasNum && aNum !== bNum) return aNum - bNum;
+    if (aHasNum && !bHasNum) return -1;
+    if (!aHasNum && bHasNum) return 1;
+    return String(a).localeCompare(String(b));
+}
+
+function formatUtc8Timestamp(date = new Date()) {
+    const utc8Date = new Date(date.getTime() + 8 * 60 * 60 * 1000);
+    return utc8Date.toISOString().replace('Z', '+08:00');
+}
+
+function recordCurrentQuestionDuration(questionId) {
+    if (!questionId || !app.questionShownAtMs) return;
+    const elapsed = Date.now() - app.questionShownAtMs;
+    if (elapsed <= 0) return;
+    app.questionDurations[questionId] = (app.questionDurations[questionId] || 0) + elapsed;
+}
+
+function buildQuestionDurationsPayload() {
+    return Object.entries(app.questionDurations)
+        .map(([questionId, durationMs]) => ({
+            questionId,
+            durationMs: Math.round(durationMs)
+        }))
+        .sort((a, b) => compareQuestionId(a.questionId, b.questionId));
+}
+
+function reportResultStats(resultType) {
+    if (app.resultStatsReported) return;
+    app.resultStatsReported = true;
+
+    const payload = {
+        totalDurationMs: Math.max(0, Date.now() - app.testStartedAtMs),
+        finalResultTimeUtc8: formatUtc8Timestamp(new Date()),
+        finalTypeCode: resultType?.code || '',
+        finalPattern: resultType?.pattern || '',
+        questionDurations: buildQuestionDurationsPayload()
+    };
+
+    fetch('/api/result-stats', {
+        method: 'POST',
+        headers: {'Content-Type': 'application/json'},
+        body: JSON.stringify(payload)
+    }).catch(() => {
+        // 上报失败不影响用户看结果
+    });
 }
 
 // ============================================================================
@@ -380,6 +438,8 @@ function renderCurrentQuestion() {
         return;
     }
 
+    app.questionShownAtMs = Date.now();
+
     questionList.innerHTML = '';
     const card = document.createElement('article');
     card.className = 'question';
@@ -417,6 +477,7 @@ function renderCurrentQuestion() {
 
             const value = Number(btn.getAttribute('data-value'));
             app.answers[currentQ.id] = value;
+            recordCurrentQuestionDuration(currentQ.id);
 
             clearFollowUp(currentQ);
             // 处理可能的追问
@@ -481,6 +542,7 @@ function renderResult() {
 
     renderDimList(result);
     showScreen('result');
+    reportResultStats(type);
 }
 
 // ============================================================================
@@ -495,6 +557,10 @@ function startTest() {
 
     app.answers = {};
     app.currentIndex = 0;
+    app.testStartedAtMs = Date.now();
+    app.questionShownAtMs = 0;
+    app.questionDurations = {};
+    app.resultStatsReported = false;
 
     buildQuestionQueue();
     updateProgress();
@@ -507,6 +573,8 @@ function startTest() {
 document.getElementById('startBtn').addEventListener('click', () => startTest());
 document.getElementById('backPrevBtn').addEventListener('click', () => {
     if (app.currentIndex <= 0) return;
+    const currentQ = app.shuffledQuestions[app.currentIndex];
+    if (currentQ) recordCurrentQuestionDuration(currentQ.id);
     app.currentIndex -= 1;
     renderCurrentQuestion();
 });
