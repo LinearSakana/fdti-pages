@@ -790,7 +790,7 @@ window.QUIZ_DATA = {
             "cn": "教务爸爸",
             "intro": "年轻人就是猴急.jpg",
             "desc": "恭喜您，您测出了教务处在凡间的代理人。JWC 人格对于选课规则、培养方案、转专业、退课制度和各种阴间通知的理解，已经超越了普通学生“看懂”的范畴，直奔“布道”而去。别人面对系统弹窗时像原始人看到闪电，您只会微微一笑，告诉他们哪个按钮该点、哪个坑不能踩。您不是在读大学，您是在替这个系统做线下客服。",
-            "pattern": "HMM-HMH-HMH-MMH-HHH",
+            "pattern": "HMM-HMH-HMH-MMM-HMM",
             "isNormal": true,
             "image": "./image/JWC.png"
         },
@@ -799,7 +799,7 @@ window.QUIZ_DATA = {
             "cn": "满绩者",
             "intro": "4.0 不只是分数，是一种宗教。",
             "desc": "恭喜您，您测出了复旦校园里最稳定、也最可怕的一类人格。GPA4 人格看似也是碳基生物，实则早已把灵魂上传到了绩点系统。别人选课看兴趣，您看给分；别人期末求过，您在研究怎样把“过”做成艺术品。您不是单纯地想拿高分，您是在用一门门课程，给自己雕一尊满绩神像。所谓大学四年，在您这里并不是青春成长史，而是一场极其漫长、极其精密的数字炼金术。",
-            "pattern": "HHH-HMH-HHH-MMM-HMH",
+            "pattern": "MMH-HMH-HHH-MMM-HMH",
             "isNormal": true,
             "image": "./image/GPA4.png"
         },
@@ -826,7 +826,7 @@ window.QUIZ_DATA = {
             "cn": "水课仙",
             "intro": "真正的强者，从不硬刚。",
             "desc": "恭喜您，您测出了大学收益率思维的终极完成体。WATR 人格不迷信苦修，不崇拜高难度，更不会把“把自己折磨得很惨”错认成优秀本身。您对课程的判断标准极其冷酷：投入产出比，才是第一生产力。别人歌颂挑战，您研究给分；别人自我感动，您悄悄把 GPA 抬了上去。您不是投机，您只是把青春花在了更值钱的地方。",
-            "pattern": "HHH-MMM-HMH-MMM-HMH",
+            "pattern": "HHH-MMM-HMH-MLM-HMH",
             "isNormal": true,
             "image": "./image/WATR.png"
         },
@@ -872,7 +872,7 @@ window.QUIZ_DATA = {
             "cn": "B+烈士",
             "intro": "我做了那么多，就给我这个？",
             "desc": "恭喜您，您测出了教务系统里最悲壮的一类牺牲人格。B+MARTYR 人格最擅长的事，就是在一门看似温和的课程里投入真情、真力、真时间，最后换来一个极具教育意义的 B+。那一刻，您不会立刻爆炸；您只会安静地坐在屏幕前，感受到一种比愤怒更高级的、文明人特有的心碎。别人说大学教人成长，而您知道，有些成长，其实就是学会认清老师的嘴脸。",
-            "pattern": "MHM-HML-MMM-MLM-MHM",
+            "pattern": "MLL-HML-MMM-MLM-MHM",
             "isNormal": true,
             "image": "./image/B+MARTYR.png"
         },
