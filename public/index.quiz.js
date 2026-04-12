@@ -99,9 +99,9 @@ function insertItemRandomly(array, item) {
 }
 
 function sumToLevel(score) {
-    if (score <= 3) return 'L';
-    if (score === 4) return 'M';
-    return 'H';
+    if (score <= 2) return 'L';
+    if (score > 4) return 'H';
+    return 'M';
 }
 
 function levelNum(level) {
