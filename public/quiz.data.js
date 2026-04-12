@@ -855,7 +855,7 @@ window.QUIZ_DATA = {
             "cn": "DDL 狂热者",
             "intro": "不逼到最后一秒，我都不知道自己这么强。",
             "desc": "恭喜您，您测出了典型的末日驱动型人格。DDLER 人格平时看着不急不慢，甚至略显摆烂，可一旦deadline贴脸，体内那套战时系统就会瞬间启动，效率高得像被雷劈过。别人平时努力，您战时变异；别人写作业靠计划，您靠命悬一线时的回光返照。您不是拖延症，您只是把全部生产力都压缩成了一次核爆。",
-            "pattern": "MMM-MLM-LHM-LLM-MHM",
+            "pattern": "MMM-MLM-LHM-LLM-MMM",
             "isNormal": true,
             "image": "./image/DDLER.png"
         },
