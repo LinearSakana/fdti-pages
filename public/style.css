@@ -309,9 +309,9 @@ button:active {
 }
 
 #result .type-name {
-    font-family: 'Caprasimo', cursive;
-    font-size: 40px;
-    font-weight: 900;
+    font-family: 'Caprasimo', 'ZCOOL KuaiLe', cursive;
+    font-size: 48px;
+    font-weight: 500;
     color: var(--blue);
     margin-bottom: 15px;
 }
