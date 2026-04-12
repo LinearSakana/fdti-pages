@@ -20,7 +20,11 @@ const HINT_EASTER_EGGS = [
         remaining: 18,
         text: 'MBTI 究竟是个什么样子，荣格搞了很多年，也并没有完全搞清楚。可能B站UP主的思路比较好，搞了个 SBTI，可惜后来僵化了。'
     },
-    {remaining: 15, text: '该内容被作者删除'},
+    {
+        remaining: 15, text: () => (Math.random() < 0.5
+            ? '该<span>内容</span>被<span>作者</span>删除'
+            : '该<span>作者</span>被<span>内容</span>删除')
+    },
     {remaining: 13, text: '<span style="display:inline-block;transform:rotate(180deg);">还剩 13 道</span>'},
     {remaining: 12, text: '道 21 剩还'},
     {
@@ -358,7 +362,7 @@ function updateProgress() {
     // 查表检索彩蛋提示
     const easterEgg = HINT_EASTER_EGGS.find(egg => egg.remaining === remaining);
     if (easterEgg) {
-        hintText = easterEgg.text;
+        hintText = typeof easterEgg.text === 'function' ? easterEgg.text() : easterEgg.text;
     }
 
     testHint.innerHTML = hintText;
