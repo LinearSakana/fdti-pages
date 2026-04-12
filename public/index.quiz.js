@@ -11,7 +11,7 @@ const BASE_DISTANCE = 30;
 const HINT_EASTER_EGGS = [
     {
         remaining: 26,
-        text: "<span style=\"text-decoration:underline;cursor:pointer;color:#06c;\" onclick=\"(function(el){let flipped=document.body.classList.toggle('flip-all');el.innerText=flipped?'我说了吧，你还不听':'不要点我';})(this)\">不要点我</span>"
+        text: '<span class="hint-action-link" data-action="flip-all">不要点我</span>'
     },
     {remaining: 25, text: '凡是金将军做出的决策，我们都坚决拥护；<br> 凡是金将军的指示，我们都始终不渝地遵循!'},
     {remaining: 24, text: '正在验证您是否是真人。这可能需要几秒钟时间 <span class="mini-spinner"></span>'},
@@ -54,6 +54,16 @@ const questionList = document.getElementById('questionList');
 const progressBar = document.getElementById('progressBar');
 const progressText = document.getElementById('progressText');
 const testHint = document.getElementById('testHint');
+const resultModeKicker = document.getElementById('resultModeKicker');
+const resultTypeName = document.getElementById('resultTypeName');
+const matchBadge = document.getElementById('matchBadge');
+const resultTypeSub = document.getElementById('resultTypeSub');
+const resultDesc = document.getElementById('resultDesc');
+const posterCaption = document.getElementById('posterCaption');
+const funNote = document.getElementById('funNote');
+const posterBox = document.getElementById('posterBox');
+const posterImage = document.getElementById('posterImage');
+const dimList = document.getElementById('dimList');
 
 // ============================================================================
 // 工具函数
@@ -91,6 +101,24 @@ function levelNum(level) {
 
 function parsePattern(pattern) {
     return pattern.replace(/-/g, '').split('');
+}
+
+function initOptionTimer(btn) {
+    if (btn.dataset.timerStarted === '1') return;
+
+    const el = btn.querySelector('.timer');
+    if (!el) return;
+
+    btn.dataset.timerStarted = '1';
+    let seconds = 0;
+    const timer = setInterval(() => {
+        if (!document.contains(btn)) {
+            clearInterval(timer);
+            return;
+        }
+        seconds += 1;
+        el.textContent = String(seconds);
+    }, 1000);
 }
 
 // 获取题目顶部标签（附加题或者维度标识）
@@ -193,10 +221,10 @@ function matchPersonality(levels) {
  */
 function determineResultDisplay(scoredData, rankedMatch) {
     const topCandidates = rankedMatch.slice(0, 3);
-    let bestNormal;
-    if (topCandidates.length === 1) {
-        bestNormal = topCandidates[0];
-    } else {
+    const fallbackNormal = window.QUIZ_DATA.typeLibrary.NPC;
+    let bestNormal = topCandidates[0] || fallbackNormal;
+
+    if (topCandidates.length > 1) {
         // 权重从高到低（可调整）
         const baseWeights = [0.6, 0.3, 0.1].slice(0, topCandidates.length);
         const total = baseWeights.reduce((s, w) => s + w, 0);
@@ -327,7 +355,10 @@ function renderCurrentQuestion() {
     questionList.appendChild(card);
 
     // 绑定选项点击事件
-    questionList.querySelectorAll('.option-btn').forEach(btn => {
+    const optionButtons = questionList.querySelectorAll('.option-btn');
+    optionButtons.forEach(btn => {
+        initOptionTimer(btn);
+
         btn.addEventListener('click', () => {
             if (btn.classList.contains('selected')) return;
             btn.classList.add('selected');
@@ -349,7 +380,6 @@ function renderCurrentQuestion() {
 }
 
 function renderDimList(result) {
-    const dimList = document.getElementById('dimList');
     dimList.innerHTML = window.QUIZ_DATA.dimensionOrder.map(dim => {
         const level = result.levels[dim];
         const explanation = window.QUIZ_DATA.dimExplanations[dim][level];
@@ -373,20 +403,16 @@ function renderResult() {
     // 获取待渲染的主类型
     const type = result.finalType;
 
-    document.getElementById('resultModeKicker').textContent = result.modeKicker;
-    document.getElementById('resultTypeName').innerHTML = `${type.code} <br> ${type.cn}`;
-    document.getElementById('matchBadge').textContent = result.badge;
-    document.getElementById('resultTypeSub').textContent = result.sub;
-    document.getElementById('resultDesc').textContent = type.desc;
-    document.getElementById('posterCaption').textContent = type.intro;
+    resultModeKicker.textContent = result.modeKicker;
+    resultTypeName.innerHTML = `${type.code} <br> ${type.cn}`;
+    matchBadge.textContent = result.badge;
+    resultTypeSub.textContent = result.sub;
+    resultDesc.textContent = type.desc;
+    posterCaption.textContent = type.intro;
 
-    const funNoteEl = document.getElementById('funNote');
-    funNoteEl.textContent = result.special
+    funNote.textContent = result.special
         ? '本测试仅供娱乐(不过能匹配到 GARY 和 SJTUER 的也是神入了)'
         : '本测试仅供娱乐';
-
-    const posterBox = document.getElementById('posterBox');
-    const posterImage = document.getElementById('posterImage');
 
     if (type.image) {
         posterImage.src = type.image;
@@ -427,3 +453,11 @@ document.getElementById('startBtn').addEventListener('click', () => startTest())
 document.getElementById('backIntroBtn').addEventListener('click', () => showScreen('intro'));
 document.getElementById('restartBtn').addEventListener('click', () => startTest());
 document.getElementById('toTopBtn').addEventListener('click', () => showScreen('intro'));
+
+testHint.addEventListener('click', event => {
+    const btn = event.target.closest('[data-action="flip-all"]');
+    if (!btn) return;
+
+    const flipped = document.body.classList.toggle('flip-all');
+    btn.textContent = flipped ? '我说了吧，你还不听' : '不要点我';
+});

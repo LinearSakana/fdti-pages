@@ -8,51 +8,6 @@
     <link rel="stylesheet" href="./style.css">
 </head>
 <body>
-<script>
-    // 深度思考读秒时间
-    function initTimer(btn) {
-        if (btn._timerStarted) return;
-        btn._timerStarted = true;
-
-        let s = 0;
-        const el = btn.querySelector('.timer');
-        if (!el) return;
-
-        const timer = setInterval(() => {
-            if (!document.contains(btn)) {
-                clearInterval(timer);
-                return;
-            }
-            el.innerText = ++s;
-        }, 1000);
-
-        btn._timer = timer;
-    }
-
-    // 初始化已有
-    document.querySelectorAll('.option-btn').forEach(initTimer);
-
-    // 监听未来新增
-    const observer = new MutationObserver((mutations) => {
-        for (const m of mutations) {
-            for (const node of m.addedNodes) {
-                if (!(node instanceof HTMLElement)) continue;
-
-                const btns = node.matches('.option-btn')
-                    ? [node]
-                    : node.querySelectorAll('.option-btn');
-
-                btns.forEach(initTimer);
-            }
-        }
-    });
-
-    observer.observe(document.body, {
-        childList: true,
-        subtree: true
-    });
-</script>
-
 <header>
     <div class="brand">FuDan Type Indicator</div>
     <h1>FDTI</h1>
