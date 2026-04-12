@@ -9,18 +9,27 @@ const BASE_DISTANCE = 30;
 
 // 答题进度提示彩蛋配置
 const HINT_EASTER_EGGS = [
-    { remaining: 26, text: "<span style=\"text-decoration:underline;cursor:pointer;color:#06c;\" onclick=\"(function(el){let flipped=document.body.classList.toggle('flip-all');el.innerText=flipped?'我说了吧，你还不听':'不要点我';})(this)\">不要点我</span>" },
-    { remaining: 25, text: '凡是金将军做出的决策，我们都坚决拥护；<br> 凡是金将军的指示，我们都始终不渝地遵循!' },
-    { remaining: 24, text: '正在验证您是否是真人。这可能需要几秒钟时间 <span class="mini-spinner"></span>' },
-    { remaining: 22, text: '告诉學生們，去做 FDTI，發帖子，點贊最高的，獎一个华为手表' },
-    { remaining: 18, text: 'MBTI 究竟是个什么样子，荣格搞了很多年，也并没有完全搞清楚。可能B站UP主的思路比较好，搞了个 SBTI，可惜后来僵化了。' },
-    { remaining: 15, text: '该内容被作者删除' },
-    { remaining: 13, text: '<span style="display:inline-block;transform:rotate(180deg);">还剩 13 道</span>' },
-    { remaining: 12, text: '道 21 剩还' },
-    { remaining: 11, text: '<span style="opacity:0;animation:fadein 1s forwards;animation-delay:10s;">你终于等到了这句话：还剩 11 道</span>' },
-    { remaining: 3, text: '最后几题通常会有彩蛋' },
-    { remaining: 2, text: '也可能没有' },
-    { remaining: 0, text: '完成后查看结果' }
+    {
+        remaining: 26,
+        text: "<span style=\"text-decoration:underline;cursor:pointer;color:#06c;\" onclick=\"(function(el){let flipped=document.body.classList.toggle('flip-all');el.innerText=flipped?'我说了吧，你还不听':'不要点我';})(this)\">不要点我</span>"
+    },
+    {remaining: 25, text: '凡是金将军做出的决策，我们都坚决拥护；<br> 凡是金将军的指示，我们都始终不渝地遵循!'},
+    {remaining: 24, text: '正在验证您是否是真人。这可能需要几秒钟时间 <span class="mini-spinner"></span>'},
+    {remaining: 22, text: '告诉學生們，去做 FDTI，發帖子，點贊最高的，獎一个华为手表'},
+    {
+        remaining: 18,
+        text: 'MBTI 究竟是个什么样子，荣格搞了很多年，也并没有完全搞清楚。可能B站UP主的思路比较好，搞了个 SBTI，可惜后来僵化了。'
+    },
+    {remaining: 15, text: '该内容被作者删除'},
+    {remaining: 13, text: '<span style="display:inline-block;transform:rotate(180deg);">还剩 13 道</span>'},
+    {remaining: 12, text: '道 21 剩还'},
+    {
+        remaining: 11,
+        text: '<span style="opacity:0;animation:fadein 1s forwards;animation-delay:10s;">你终于等到了这句话：还剩 11 道</span>'
+    },
+    {remaining: 3, text: '最后几题通常会有彩蛋'},
+    {remaining: 2, text: '也可能没有'},
+    {remaining: 0, text: '完成后查看结果'}
 ];
 
 // ============================================================================
@@ -53,7 +62,7 @@ function showScreen(name) {
     Object.entries(screens).forEach(([key, el]) => {
         el.classList.toggle('active', key === name);
     });
-    window.scrollTo({ top: 0, behavior: 'smooth' });
+    window.scrollTo({top: 0, behavior: 'smooth'});
 }
 
 function shuffle(array) {
@@ -77,7 +86,7 @@ function sumToLevel(score) {
 }
 
 function levelNum(level) {
-    return { L: 1, M: 2, H: 3 }[level];
+    return {L: 1, M: 2, H: 3}[level];
 }
 
 function parsePattern(pattern) {
@@ -118,7 +127,7 @@ function resolveFollowUp(currentQ, value) {
     const nextQuestions = window.QUIZ_DATA.specialQuestions.filter(
         q => q.triggerId === currentQ.id && q.triggerValue === value
     );
-    
+
     if (nextQuestions.length > 0) {
         app.shuffledQuestions.splice(app.currentIndex + 1, 0, ...nextQuestions);
     }
@@ -148,7 +157,7 @@ function scoreDimensions() {
         levels[dim] = sumToLevel(score);
     });
 
-    return { rawScores, levels };
+    return {rawScores, levels};
 }
 
 /**
@@ -156,7 +165,7 @@ function scoreDimensions() {
  */
 function matchPersonality(levels) {
     const userVector = window.QUIZ_DATA.dimensionOrder.map(dim => levelNum(levels[dim]));
-    
+
     // 从 library 中筛选出规范人格用于匹配
     const normalTypesInfo = Object.values(window.QUIZ_DATA.typeLibrary)
         .filter(t => t.isNormal && t.pattern);
@@ -171,7 +180,7 @@ function matchPersonality(levels) {
             if (diff === 0) exact += 1;
         }
         const similarity = Math.max(0, Math.round((1 - distance / BASE_DISTANCE) * 100));
-        return { ...type, distance, exact, similarity };
+        return {...type, distance, exact, similarity};
     }).sort((a, b) => {
         if (a.distance !== b.distance) return a.distance - b.distance;
         if (b.exact !== a.exact) return b.exact - a.exact;
@@ -183,8 +192,23 @@ function matchPersonality(levels) {
  * 处理特殊判定，组装最终渲染用数据对象
  */
 function determineResultDisplay(scoredData, rankedMatch) {
-    const bestNormal = rankedMatch[0];
-    
+    const topCandidates = rankedMatch.slice(0, 3);
+    let bestNormal;
+    if (topCandidates.length === 1) {
+        bestNormal = topCandidates[0];
+    } else {
+        // 权重从高到低（可调整）
+        const baseWeights = [0.6, 0.3, 0.1].slice(0, topCandidates.length);
+        const total = baseWeights.reduce((s, w) => s + w, 0);
+        let r = Math.random() * total;
+        let idx = 0;
+        while (r > baseWeights[idx] && idx < baseWeights.length - 1) {
+            r -= baseWeights[idx];
+            idx++;
+        }
+        bestNormal = topCandidates[idx];
+    }
+
     // 默认结果字段
     let finalType;
     let modeKicker = '你的主类型';
@@ -247,12 +271,12 @@ function updateProgress() {
     const total = app.shuffledQuestions.length;
     const currentStep = total ? Math.min(app.currentIndex + 1, total) : 0;
     const percent = total ? ((currentStep - 1) / total) * 100 : 0;
-    
+
     progressBar.style.width = `${percent}%`;
     progressText.textContent = `${currentStep} / ${total}`;
 
     const remaining = total - currentStep;
-    
+
     // 基础提示：如果题量大就显示点击选项提醒，如果所剩不多就直出剩余数量
     let hintText = remaining > 13
         ? `点击选项继续（还剩 ${remaining} 道）`
@@ -279,7 +303,7 @@ function renderCurrentQuestion() {
     questionList.innerHTML = '';
     const card = document.createElement('article');
     card.className = 'question';
-    
+
     const optionsHtml = currentQ.options.map((opt, i) => {
         const code = ['A', 'B', 'C', 'D'][i] || String(i + 1);
         return `
@@ -310,7 +334,7 @@ function renderCurrentQuestion() {
 
             const value = Number(btn.getAttribute('data-value'));
             app.answers[currentQ.id] = value;
-            
+
             // 处理可能的追问
             resolveFollowUp(currentQ, value);
 
@@ -345,7 +369,7 @@ function renderResult() {
     const scoredData = scoreDimensions();
     const rankedMatch = matchPersonality(scoredData.levels);
     const result = determineResultDisplay(scoredData, rankedMatch);
-    
+
     // 获取待渲染的主类型
     const type = result.finalType;
 
@@ -355,7 +379,7 @@ function renderResult() {
     document.getElementById('resultTypeSub').textContent = result.sub;
     document.getElementById('resultDesc').textContent = type.desc;
     document.getElementById('posterCaption').textContent = type.intro;
-    
+
     const funNoteEl = document.getElementById('funNote');
     funNoteEl.textContent = result.special
         ? '本测试仅供娱乐(不过能匹配到 GARY 和 SJTUER 的也是神入了)'
@@ -363,7 +387,7 @@ function renderResult() {
 
     const posterBox = document.getElementById('posterBox');
     const posterImage = document.getElementById('posterImage');
-    
+
     if (type.image) {
         posterImage.src = type.image;
         posterImage.alt = `${type.code}（${type.cn}）`;
