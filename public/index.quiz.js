@@ -374,7 +374,7 @@ function renderResult() {
     const type = result.finalType;
 
     document.getElementById('resultModeKicker').textContent = result.modeKicker;
-    document.getElementById('resultTypeName').textContent = `${type.code}（${type.cn}）`;
+    document.getElementById('resultTypeName').innerHTML = `${type.code} <br> ${type.cn}`;
     document.getElementById('matchBadge').textContent = result.badge;
     document.getElementById('resultTypeSub').textContent = result.sub;
     document.getElementById('resultDesc').textContent = type.desc;
@@ -390,7 +390,7 @@ function renderResult() {
 
     if (type.image) {
         posterImage.src = type.image;
-        posterImage.alt = `${type.code}（${type.cn}）`;
+        posterImage.alt = `${type.code} ${type.cn}`;
         posterBox.classList.remove('no-image');
     } else {
         posterImage.removeAttribute('src');
