@@ -65,6 +65,7 @@ const posterBox = document.getElementById('posterBox');
 const posterImage = document.getElementById('posterImage');
 const dimList = document.getElementById('dimList');
 const backPrevBtn = document.getElementById('backPrevBtn');
+const GLOW_IMAGE_KEYWORDS = ['KIM', 'GARY'];
 
 // ============================================================================
 // 工具函数
@@ -120,6 +121,23 @@ function initOptionTimer(btn) {
         seconds += 1;
         el.textContent = String(seconds);
     }, 1000);
+}
+
+function getImageFileName(src) {
+    if (!src) return '';
+    try {
+        return (new URL(src, window.location.href).pathname.split('/').pop() || '')
+            .replace(/\.[^.]+$/, '')
+            .toUpperCase();
+    } catch {
+        return String(src).split('/').pop().replace(/\.[^.]+$/, '').toUpperCase();
+    }
+}
+
+function updatePosterGlow(src) {
+    const fileName = getImageFileName(src);
+    const shouldGlow = GLOW_IMAGE_KEYWORDS.some(keyword => fileName.includes(keyword));
+    posterImage.classList.toggle('poster-image--glow', shouldGlow);
 }
 
 // 获取题目顶部标签（附加题或者维度标识）
@@ -443,9 +461,11 @@ function renderResult() {
         ? '本测试仅供娱乐(不过能匹配到 GARY 和 SJTUER 的也是神入了)'
         : '本测试仅供娱乐';
 
+    posterImage.classList.remove('poster-image--glow');
     if (type.image) {
         posterImage.src = type.image;
         posterImage.alt = `${type.code} ${type.cn}`;
+        updatePosterGlow(type.image);
         posterBox.classList.remove('no-image');
     } else {
         posterImage.removeAttribute('src');
