@@ -9,11 +9,17 @@ const BASE_DISTANCE = 30;
 
 // 答题进度提示彩蛋配置
 const HINT_EASTER_EGGS = [
-    { remaining: 24, text: '其实现在退出也没有关系' },
-    { remaining: 23, text: '真的，不管是 FDTI 还是 SBTI 什么的，你不会真的信吧？' },
+    { remaining: 26, text: "<span style=\"text-decoration:underline;cursor:pointer;color:#06c;\" onclick=\"(function(el){var flipped=document.body.classList.toggle('flip-all');el.innerText=flipped?'我说了吧，你还不听':'不要点我';})(this)\">不要点我</span>" },
+    { remaining: 25, text: '凡是金将军做出的决策，我们都坚决拥护；<br> 凡是金将军的指示，我们都始终不渝地遵循!' },
+    { remaining: 24, text: '正在验证您是否是真人。这可能需要几秒钟时间 <span class="mini-spinner"></span>' },
     { remaining: 22, text: '告诉學生們，去做 FDTI，發帖子，點贊最高的，獎一个华为手表' },
-    { remaining: 18, text: 'MBTI 究竟是个什么样子，荣格搞了很多年，也并没有完全搞清楚。\n 可能B站UP主的思路比较好，搞了个 SBTI，可惜后来僵化了。' },
+    { remaining: 18, text: 'MBTI 究竟是个什么样子，荣格搞了很多年，也并没有完全搞清楚。可能B站UP主的思路比较好，搞了个 SBTI，可惜后来僵化了。' },
     { remaining: 15, text: '该内容被作者删除' },
+    { remaining: 13, text: '<span style="display:inline-block;transform:rotate(180deg);">还剩 13 道</span>' },
+    { remaining: 12, text: '道 21 剩还' },
+    { remaining: 11, text: '<span style="opacity:0;animation:fadein 1s forwards;animation-delay:10s;">你终于等到了这句话：还剩 11 道</span>' },
+    { remaining: 3, text: '最后几题通常会有彩蛋' },
+    { remaining: 2, text: '也可能没有' },
     { remaining: 0, text: '完成后查看结果' }
 ];
 
@@ -263,7 +269,7 @@ function updateProgress() {
         hintText = easterEgg.text;
     }
 
-    testHint.textContent = hintText;
+    testHint.innerHTML = hintText;
 }
 
 function renderCurrentQuestion() {
