@@ -264,7 +264,7 @@ function matchPersonality(levels) {
  */
 function determineResultDisplay(scoredData, rankedMatch) {
     const candidates = Array.from(
-        new Map([...rankedMatch.slice(0,3),...rankedMatch.slice(-2)].map(t => [t.code, t])).values()
+        new Map([...rankedMatch.slice(0, 3), ...rankedMatch.slice(-2)].map(t => [t.code, t])).values()
     )
     const fallbackNormal = window.QUIZ_DATA.typeLibrary.NPC;
     let bestNormal = candidates[0] || fallbackNormal;

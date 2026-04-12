@@ -442,7 +442,6 @@ button:active {
 }
 
 
-
 .result-actions {
     display: flex;
     flex-wrap: wrap;
@@ -481,23 +480,28 @@ button:active {
 }
 
 .mini-spinner {
-  display: inline-block;
-  width: 0.9em;
-  height: 0.9em;
-  border: 2px solid #ccc;
-  border-top-color: #333;
-  border-radius: 50%;
-  animation: spin 0.6s linear infinite;
-  vertical-align: middle;
+    display: inline-block;
+    width: 0.9em;
+    height: 0.9em;
+    border: 2px solid #ccc;
+    border-top-color: #333;
+    border-radius: 50%;
+    animation: spin 0.6s linear infinite;
+    vertical-align: middle;
 }
 
 @keyframes spin {
-  to { transform: rotate(360deg); }
+    to {
+        transform: rotate(360deg);
+    }
 }
+
 @keyframes fadein {
-  to { opacity: 1; }
+    to {
+        opacity: 1;
+    }
 }
 
 .flip-all {
-  transform: rotate(180deg);
+    transform: rotate(180deg);
 }
