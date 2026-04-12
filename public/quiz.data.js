@@ -803,7 +803,7 @@ window.QUIZ_DATA = {
             "isNormal": true,
             "image": "./image/GPA4.png"
         },
-        "AM8DEAD": {
+        "DEAD8AM": {
             "code": "DEAD8AM",
             "cn": "早八死者",
             "intro": "早八？翘之！",
