@@ -271,7 +271,7 @@ function determineResultDisplay(scoredData, rankedMatch) {
 
     if (candidates.length > 1) {
         // 权重从高到低（可调整）
-        const baseWeights = [0.7, 0.1, 0.1, 0.05, 0.05].slice(0, candidates.length);
+        const baseWeights = [0.7, 0.16, 0.1, 0.02, 0.02].slice(0, candidates.length);
         const total = baseWeights.reduce((s, w) => s + w, 0);
         let r = Math.random() * total;
         let idx = 0;
