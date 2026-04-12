@@ -19,39 +19,38 @@
 
 body {
     font-family: "ZCOOL KuaiLe", "Noto Sans SC", "Microsoft YaHei", sans-serif;
-    font-weight: 500;
-    letter-spacing: 2px;
+    font-weight: 450;
+    letter-spacing: 2.5px;
     background-color: var(--cream);
     color: var(--text);
     min-height: 100vh;
     display: flex;
     flex-direction: column;
     align-items: center;
-    line-height: 1.6;
+    line-height: 1.35;
 }
 
 header {
     width: 100%;
     background-color: var(--blue);
     color: var(--cream);
-    padding: 30px 24px;
+    padding: 10px 10px;
     text-align: center;
     border-bottom: var(--border);
 }
 
 header .brand {
     font-family: 'Caprasimo', serif;
-    font-size: 14px;
+    font-size: 16px;
     font-weight: lighter;
     letter-spacing: 5px;
-    margin-bottom: 2px;
     color: var(--yellow);
 }
 
 header h1 {
     font-family: 'Caprasimo', cursive;
-    font-size: 52px;
-    font-weight: 800;
+    font-size: 50px;
+    font-weight: 500;
     letter-spacing: 30px;
     color: var(--red);
     text-shadow: 2px 2px 0 var(--cream);
@@ -78,13 +77,13 @@ main {
 }
 
 #intro h2 {
-    font-size: 28px;
+    font-size: 26px;
     color: var(--red);
     margin-bottom: 20px;
 }
 
 #intro .desc {
-    font-size: 18px;
+    font-size: 16px;
     margin-bottom: 15px;
 }
 
@@ -92,7 +91,7 @@ button {
     font-family: "ZCOOL KuaiLe", cursive;
     border: var(--border);
     cursor: pointer;
-    font-size: 20px;
+    font-size: 16px;
     letter-spacing: 2px;
     border-radius: var(--radius);
     box-shadow: 4px 4px 0 var(--blue);
@@ -121,7 +120,7 @@ button:active {
 
 #intro .author, #intro .note {
     margin-top: 25px;
-    font-size: 14px;
+    font-size: 16px;
 }
 
 #intro .author a {
@@ -134,12 +133,12 @@ button:active {
     display: flex;
     align-items: center;
     gap: 15px;
-    margin-bottom: 20px;
+    margin-bottom: 15px;
 }
 
 .progress-bar {
     flex: 1;
-    height: 16px;
+    height: 14px;
     background-color: var(--cream);
     border: var(--border);
 }
@@ -157,8 +156,8 @@ button:active {
 }
 
 .hint {
-    font-size: 14px;
-    margin-bottom: 20px;
+    font-size: 12px;
+    margin-bottom: 5px;
     color: var(--blue);
 }
 
@@ -182,7 +181,7 @@ button:active {
     font-family: 'Bungee', cursive;
     font-weight: 200;
     letter-spacing: -2px;
-    font-size: 20px;
+    font-size: 18px;
 }
 
 .badge {
@@ -194,11 +193,10 @@ button:active {
 }
 
 .question-title {
-    font-size: 20px;
+    font-size: 18px;
     margin-bottom: 25px;
     white-space: pre-wrap;
     color: var(--blue);
-    line-height: 1.5;
 }
 
 .options {
@@ -216,7 +214,6 @@ button:active {
     background-color: var(--cream);
     color: var(--blue);
     padding: 18px 20px;
-    font-size: 20px;
     position: relative;
     overflow: hidden;
     /* Remove active transform since selected state will handle it */
@@ -313,7 +310,7 @@ button:active {
 
 #result .type-name {
     font-family: 'Caprasimo', cursive;
-    font-size: 44px;
+    font-size: 40px;
     font-weight: 900;
     color: var(--blue);
     margin-bottom: 15px;
@@ -329,7 +326,7 @@ button:active {
 }
 
 #result .type-subname {
-    font-size: 16px;
+    font-size: 14px;
     color: var(--blue);
 }
 
@@ -366,7 +363,7 @@ button:active {
 }
 
 .analysis-box h3, .dim-box h3, .note-box h3 {
-    font-size: 18px;
+    font-size: 16px;
     font-weight: 520;
     margin-bottom: 15px;
     color: var(--red);
@@ -375,7 +372,7 @@ button:active {
 }
 
 #resultDesc, .note-box p {
-    font-size: 15px;
+    font-size: 14px;
     line-height: 1.8;
     white-space: pre-wrap;
 }
