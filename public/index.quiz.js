@@ -29,7 +29,6 @@ const HINT_EASTER_EGGS = [
 const app = {
     shuffledQuestions: [], // 题目队列
     answers: {},           // 用户答案映射表 { questionId: value }
-    previewMode: false,    // 是否为调试/预览模式
     currentIndex: 0        // 当前题目索引
 };
 
@@ -88,7 +87,7 @@ function parsePattern(pattern) {
 // 获取题目顶部标签（附加题或者维度标识）
 function getQuestionMetaLabel(q) {
     if (q.special) return '补充题';
-    return app.previewMode ? window.QUIZ_DATA.dimensionMeta[q.dim].name : ' ';
+    return ' ';
 }
 
 // ============================================================================
@@ -246,11 +245,7 @@ function determineResultDisplay(scoredData, rankedMatch) {
 
 function updateProgress() {
     const total = app.shuffledQuestions.length;
-    let displayStep = app.currentIndex + 1;
-    if (app.prankIndex !== -1 && app.currentIndex === 2) {
-        displayStep -= 1; // 整蛊起效，假装进度没变
-    }
-    const currentStep = total ? Math.min(displayStep, total) : 0;
+    const currentStep = total ? Math.min(app.currentIndex + 1, total) : 0;
     const percent = total ? ((currentStep - 1) / total) * 100 : 0;
     
     progressBar.style.width = `${percent}%`;
@@ -386,14 +381,13 @@ function renderResult() {
 // ============================================================================
 // 程序入口
 // ============================================================================
-function startTest(preview = false) {
+function startTest() {
     // 数据未加载防抖
     if (!window.QUIZ_DATA) {
         console.error("Quiz data is not correctly loaded!");
         return;
     }
 
-    app.previewMode = preview;
     app.answers = {};
     app.currentIndex = 0;
 
@@ -405,7 +399,7 @@ function startTest(preview = false) {
 }
 
 // 事件挂载
-document.getElementById('startBtn').addEventListener('click', () => startTest(false));
+document.getElementById('startBtn').addEventListener('click', () => startTest());
 document.getElementById('backIntroBtn').addEventListener('click', () => showScreen('intro'));
-document.getElementById('restartBtn').addEventListener('click', () => startTest(false));
+document.getElementById('restartBtn').addEventListener('click', () => startTest());
 document.getElementById('toTopBtn').addEventListener('click', () => showScreen('intro'));

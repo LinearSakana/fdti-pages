@@ -357,7 +357,7 @@ button:active {
     text-align: center;
 }
 
-.analysis-box, .dim-box, .note-box, .author-box {
+.analysis-box, .dim-box, .note-box {
     border: var(--border);
     padding: 20px;
     margin-bottom: 20px;
@@ -406,23 +406,7 @@ button:active {
     color: var(--blue);
 }
 
-.author-box summary {
-    list-style: none;
-    color: var(--red);
-    cursor: pointer;
-    font-size: 16px;
-}
 
-.author-box summary::-webkit-details-marker {
-    display: none;
-}
-
-.author-content p {
-    margin-top: 10px;
-    font-size: 14px;
-    line-height: 1.8;
-    color: var(--blue);
-}
 
 .result-actions {
     display: flex;
