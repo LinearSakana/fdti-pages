@@ -357,7 +357,7 @@ function renderDimList(result) {
           <div class="dim-item">
             <div class="dim-item-top">
               <div class="dim-item-name">${window.QUIZ_DATA.dimensionMeta[dim].name}</div>
-              <div class="dim-item-score">${level} / ${result.rawScores[dim]}分</div>
+              <div class="dim-item-score">${level} / ${result.rawScores[dim]}</div>
             </div>
             <p>${explanation}</p>
           </div>
