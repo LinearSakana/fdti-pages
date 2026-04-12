@@ -40,7 +40,7 @@ header {
 }
 
 header .brand {
-    font-family: 'Caprasimo';
+    font-family: 'Caprasimo', serif;
     font-size: 14px;
     font-weight: lighter;
     letter-spacing: 5px;
@@ -101,7 +101,7 @@ button {
 
 button:active {
     transform: translate(4px, 4px);
-    box-shadow: 0px 0px 0 var(--blue);
+    box-shadow: 0 0 0 var(--blue);
 }
 
 .btn-primary {

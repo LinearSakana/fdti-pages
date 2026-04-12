@@ -9,7 +9,7 @@ const BASE_DISTANCE = 30;
 
 // 答题进度提示彩蛋配置
 const HINT_EASTER_EGGS = [
-    { remaining: 26, text: "<span style=\"text-decoration:underline;cursor:pointer;color:#06c;\" onclick=\"(function(el){var flipped=document.body.classList.toggle('flip-all');el.innerText=flipped?'我说了吧，你还不听':'不要点我';})(this)\">不要点我</span>" },
+    { remaining: 26, text: "<span style=\"text-decoration:underline;cursor:pointer;color:#06c;\" onclick=\"(function(el){let flipped=document.body.classList.toggle('flip-all');el.innerText=flipped?'我说了吧，你还不听':'不要点我';})(this)\">不要点我</span>" },
     { remaining: 25, text: '凡是金将军做出的决策，我们都坚决拥护；<br> 凡是金将军的指示，我们都始终不渝地遵循!' },
     { remaining: 24, text: '正在验证您是否是真人。这可能需要几秒钟时间 <span class="mini-spinner"></span>' },
     { remaining: 22, text: '告诉學生們，去做 FDTI，發帖子，點贊最高的，獎一个华为手表' },
@@ -215,10 +215,10 @@ function determineResultDisplay(scoredData, rankedMatch) {
 
     } else if (bestNormal.similarity < FALLBACK_THRESHOLD) {
         // 低匹配度兜底
-        finalType = window.QUIZ_DATA.typeLibrary.HHHH;
+        finalType = window.QUIZ_DATA.typeLibrary.NPC;
         modeKicker = '系统强制兜底';
         badge = `标准人格库最高匹配仅 ${bestNormal.similarity}%`;
-        sub = '标准人格库对你的脑回路集体罢工了，于是系统把你强制分配给了 HHHH。';
+        sub = '标准人格库对你的脑回路集体罢工了，于是系统把你强制分配给了 NPC。';
         special = true;
 
     } else {
