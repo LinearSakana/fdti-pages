@@ -5,7 +5,6 @@ const CLICK_DELAY = 500;
 const GARY_PROBABILITY = 0.8;
 const FALLBACK_THRESHOLD = 60;
 const TOTAL_DIMENSIONS = 15;
-const BASE_DISTANCE = 30;
 
 // 答题进度提示彩蛋配置
 const HINT_EASTER_EGGS = [
@@ -312,7 +311,7 @@ function matchPersonality(levels) {
             distance += diff;
             if (diff === 0) exact += 1;
         }
-        const similarity = Math.max(0, Math.round((1 - distance / BASE_DISTANCE) * 100));
+        const similarity = Math.max(0, Math.round((1 - distance / (TOTAL_DIMENSIONS * 2)) * 100));
         return {...type, distance, exact, similarity};
     }).sort((a, b) => {
         if (a.distance !== b.distance) return a.distance - b.distance;
