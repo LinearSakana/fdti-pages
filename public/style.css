@@ -115,7 +115,7 @@ button:active {
     display: inline-block;
     background-color: var(--yellow);
     color: var(--blue);
-    padding: 12px 32px;
+    padding: 12px 28px;
 }
 
 #intro .author, #intro .note {

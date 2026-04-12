@@ -451,7 +451,6 @@ function startTest() {
 // 事件挂载
 document.getElementById('startBtn').addEventListener('click', () => startTest());
 document.getElementById('backIntroBtn').addEventListener('click', () => showScreen('intro'));
-document.getElementById('restartBtn').addEventListener('click', () => startTest());
 document.getElementById('toTopBtn').addEventListener('click', () => showScreen('intro'));
 
 testHint.addEventListener('click', event => {
