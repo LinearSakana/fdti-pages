@@ -371,7 +371,7 @@ function determineResultDisplay(scoredData, rankedMatch) {
         sub = '交通大学才是 Top 3 ！————来自某 QS 榜 Top 2 高校';
         special = true;
 
-    } else if (bestNormal.similarity < FALLBACK_THRESHOLD) {
+    } else if (rankedMatch[0].similarity < FALLBACK_THRESHOLD) {
         // 低匹配度兜底
         finalType = window.QUIZ_DATA.typeLibrary.NPC;
         modeKicker = '系统强制兜底';
