@@ -5,6 +5,8 @@ const CLICK_DELAY = 500;
 const GARY_PROBABILITY = 0.8;
 const FALLBACK_THRESHOLD = 60;
 const TOTAL_DIMENSIONS = 15;
+const RESULT_IMAGE_PRELOAD_CONCURRENCY = 3;
+const RESULT_IMAGE_PRELOAD_RETRY_BASE_MS = 3000;
 
 // 答题进度提示彩蛋配置
 const HINT_EASTER_EGGS = [
@@ -45,7 +47,13 @@ const app = {
     testStartedAtMs: 0,    // 本次作答开始时间戳
     questionShownAtMs: 0,  // 当前题目开始展示时间戳
     questionDurations: {}, // 每题耗时映射 { questionId: durationMs }
-    resultStatsReported: false
+    resultStatsReported: false, // 结果图像预渲染
+    resultImagePreloadStarted: false,
+    resultImagePreloadQueue: [],
+    resultImagePreloadInFlight: 0,
+    resultImagePreloadLoaded: new Set(),
+    resultImagePreloadRetryTimers: new Map(),
+    resultImagePreloadAliveImages: new Map()
 };
 
 // ============================================================================
@@ -145,6 +153,82 @@ function updatePosterGlow(src) {
     const fileName = getImageFileName(src);
     const shouldGlow = GLOW_IMAGE_KEYWORDS.some(keyword => fileName.includes(keyword));
     posterImage.classList.toggle('poster-image--glow', shouldGlow);
+}
+
+function collectResultImageUrls() {
+    const library = window.QUIZ_DATA?.typeLibrary || {};
+    const imageUrls = Object.values(library)
+        .map(type => type?.image)
+        .filter(Boolean)
+        .map(src => new URL(src, window.location.href).href);
+    return [...new Set(imageUrls)];
+}
+
+function scheduleResultImageRetry(url, attempt) {
+    if (app.resultImagePreloadLoaded.has(url)) return;
+    const prevTimer = app.resultImagePreloadRetryTimers.get(url);
+    if (prevTimer) clearTimeout(prevTimer);
+    const delay = Math.min(10000, RESULT_IMAGE_PRELOAD_RETRY_BASE_MS * Math.max(1, attempt));
+    const timer = setTimeout(() => {
+        app.resultImagePreloadRetryTimers.delete(url);
+        if (!app.resultImagePreloadLoaded.has(url)) {
+            app.resultImagePreloadQueue.push({url, attempt});
+            pumpResultImagePreload();
+        }
+    }, delay);
+    app.resultImagePreloadRetryTimers.set(url, timer);
+}
+
+function preloadOneResultImage(task) {
+    const {url, attempt} = task;
+    if (app.resultImagePreloadLoaded.has(url)) return;
+
+    app.resultImagePreloadInFlight += 1;
+
+    const img = new Image();
+    app.resultImagePreloadAliveImages.set(url, img);
+    img.decoding = 'async';
+
+    img.onload = () => {
+        app.resultImagePreloadLoaded.add(url);
+        app.resultImagePreloadAliveImages.delete(url);
+        app.resultImagePreloadInFlight -= 1;
+        const retryTimer = app.resultImagePreloadRetryTimers.get(url);
+        if (retryTimer) {
+            clearTimeout(retryTimer);
+            app.resultImagePreloadRetryTimers.delete(url);
+        }
+        pumpResultImagePreload();
+    };
+
+    img.onerror = () => {
+        app.resultImagePreloadAliveImages.delete(url);
+        app.resultImagePreloadInFlight -= 1;
+        scheduleResultImageRetry(url, attempt + 1);
+        pumpResultImagePreload();
+    };
+
+    img.src = url;
+}
+
+function pumpResultImagePreload() {
+    while (
+        app.resultImagePreloadInFlight < RESULT_IMAGE_PRELOAD_CONCURRENCY
+        && app.resultImagePreloadQueue.length > 0
+    ) {
+        const task = app.resultImagePreloadQueue.shift();
+        if (!task || app.resultImagePreloadLoaded.has(task.url)) continue;
+        preloadOneResultImage(task);
+    }
+}
+
+function startResultImagePreload() {
+    if (app.resultImagePreloadStarted) return;
+    app.resultImagePreloadStarted = true;
+
+    const urls = collectResultImageUrls();
+    app.resultImagePreloadQueue = urls.map(url => ({url, attempt: 1}));
+    pumpResultImagePreload();
 }
 
 // 获取题目顶部标签（附加题或者维度标识）
@@ -563,6 +647,7 @@ function startTest() {
     app.resultStatsReported = false;
 
     buildQuestionQueue();
+    startResultImagePreload();
     updateProgress();
 
     showScreen('test');
