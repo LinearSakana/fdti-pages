@@ -819,7 +819,7 @@ window.QUIZ_DATA = {
             "cn": "教务爸爸",
             "intro": "年轻人就是猴急.jpg",
             "desc": "恭喜您，您测出了教务处在凡间的代理人。JWC 人格对于选课规则、培养方案、转专业、退课制度和各种阴间通知的理解，已经超越了普通学生“看懂”的范畴，直奔“布道”而去。别人面对系统弹窗时像原始人看到闪电，您只会微微一笑，告诉他们哪个按钮该点、哪个坑不能踩。您不是在读大学，您是在替这个系统做线下客服。",
-            "pattern": "HMM-MLH-HMH-MMM-HHM",
+            "pattern": "MHM-MLH-HMM-MMM-HHM",
             "isNormal": true,
             "image": "./image/JWC.png"
         },
@@ -846,7 +846,7 @@ window.QUIZ_DATA = {
             "cn": "三教苦行僧",
             "intro": "今天通宵，明天继续。",
             "desc": "恭喜您，您测出了校园里最接近修行者的一类人格。H3MK 人格对舒适环境没有执念，对人生乐趣也常年处于延迟满足状态。别人进三教是自习，您进三教像闭关；别人坐两小时开始刷手机，您能在一种近乎宗教仪式的痛苦里，把注意力熬成固体。您不是热爱学习，您只是相信，一个人如果连自己都坐不住，那活该被世界牵着鼻子走。",
-            "pattern": "MHH-HLH-MHH-MHH-MML",
+            "pattern": "MHH-HMH-MMH-MMH-MML",
             "isNormal": true,
             "image": "./image/H3MK.png"
         },
@@ -901,7 +901,7 @@ window.QUIZ_DATA = {
             "cn": "B+烈士",
             "intro": "我做了那么多，就给我这个？",
             "desc": "恭喜您，您测出了教务系统里最悲壮的一类牺牲人格。B+MARTYR 人格最擅长的事，就是在一门看似温和的课程里投入真情、真力、真时间，最后换来一个极具教育意义的 B+。那一刻，您不会立刻爆炸；您只会安静地坐在屏幕前，感受到一种比愤怒更高级的、文明人特有的心碎。别人说大学教人成长，而您知道，有些成长，其实就是学会认清老师的嘴脸。",
-            "pattern": "MML-MHL-MLH-MHL-MMM",
+            "pattern": "MML-MMM-MMH-MML-MMM",
             "isNormal": true,
             "image": "./image/B+MARTYR.png"
         },
