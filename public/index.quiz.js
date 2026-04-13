@@ -179,11 +179,12 @@ function recordCurrentQuestionDuration(questionId) {
 
 function buildQuestionDurationsPayload() {
     return Object.entries(app.questionDurations)
-        .map(([questionId, durationMs]) => ({
+        .map(([questionId, durationMs]) => ([
             questionId,
-            durationMs: Math.round(durationMs)
-        }))
-        .sort((a, b) => compareQuestionId(a.questionId, b.questionId));
+            Math.round(durationMs),
+            Number.isFinite(app.answers[questionId]) ? app.answers[questionId] : null
+        ]))
+        .sort((a, b) => compareQuestionId(a[0], b[0]));
 }
 
 function reportResultStats(resultType) {
