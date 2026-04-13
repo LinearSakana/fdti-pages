@@ -3,6 +3,7 @@
 // ============================================================================
 const CLICK_DELAY = 500;
 const GARY_PROBABILITY = 0.8;
+const SJTU_PROBABILITY = 0.5;
 const FALLBACK_THRESHOLD = 60;
 const TOTAL_DIMENSIONS = 15;
 const RESULT_IMAGE_PRELOAD_CONCURRENCY = 3;
@@ -448,7 +449,7 @@ function determineResultDisplay(scoredData, rankedMatch) {
         sub = '4.0有错吗  大学里摆烂还正义了是吧';
         special = true;
 
-    } else if (isSjtuerTriggered) {
+    } else if (isSjtuerTriggered && Math.random() < SJTU_PROBABILITY) {
         finalType = window.QUIZ_DATA.typeLibrary.SJTUER;
         secondaryType = bestNormal;
         modeKicker = '*已发现卧底*';
