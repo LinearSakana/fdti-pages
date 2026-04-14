@@ -62,6 +62,7 @@ const app = {
 // ============================================================================
 const screens = {
     intro: document.getElementById('intro'),
+    repeat_intro: document.getElementById('repeat_intro'),
     test: document.getElementById('test'),
     result: document.getElementById('result')
 };
@@ -657,6 +658,7 @@ function startTest() {
 
 // 事件挂载
 document.getElementById('startBtn').addEventListener('click', () => startTest());
+document.getElementById('repeatBtn').addEventListener('click', () => startTest());
 document.getElementById('backPrevBtn').addEventListener('click', () => {
     if (app.currentIndex <= 0) return;
     const currentQ = app.shuffledQuestions[app.currentIndex];
@@ -665,7 +667,7 @@ document.getElementById('backPrevBtn').addEventListener('click', () => {
     renderCurrentQuestion();
 });
 document.getElementById('backIntroBtn').addEventListener('click', () => showScreen('intro'));
-document.getElementById('toTopBtn').addEventListener('click', () => showScreen('intro'));
+document.getElementById('repeatToIntroBtn').addEventListener('click', () => showScreen('repeat_intro'));
 
 testHint.addEventListener('click', event => {
     const btn = event.target.closest('[data-action="flip-all"]');

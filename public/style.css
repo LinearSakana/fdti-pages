@@ -71,28 +71,28 @@ main {
     display: block;
 }
 
-#intro {
+:is(#intro, #repeat_intro) {
     text-align: center;
     padding-top: 20px;
 }
 
-#intro h2 {
+:is(#intro, #repeat_intro) h2 {
     font-size: 26px;
     color: var(--red);
     margin-bottom: 20px;
 }
 
-#intro .desc {
+:is(#intro, #repeat_intro) .desc {
     font-size: 16px;
     margin-bottom: 15px;
 }
 
-#intro .author, #intro .note {
+:is(#intro, #repeat_intro) :is(.author, .note) {
     margin-top: 25px;
     font-size: 16px;
 }
 
-#intro .author a {
+:is(#intro, #repeat_intro) .author a {
     color: var(--red);
     text-decoration: none;
     border-bottom: 2px solid var(--red);
